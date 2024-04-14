@@ -1,22 +1,36 @@
 <h2 data-test-title>Rezept hinzufügen</h2>
 
 <form [formGroup]="form" data-test-create-recipe-form>
-  <div class="forms-column">
+  <div>
     <mat-form-field>
       <mat-label>Titel</mat-label>
       <!-- Brot des Lebens -->
       <input
         matInput
         [formControl]="form.controls.title"
-        placeholder="Weinberg des Herrn"
+        placeholder="Brot des Lebens"
         type="text"
         data-test-recipe-title-input
       />
       <mat-hint
         >Zwischen {{ titleValidations.min | notUndefined }} und
         <!-- eslint-disable-next-line prettier/prettier -->{{
-        titleValidations.min | notUndefined }} Zeichen</mat-hint
+          titleValidations.max | notUndefined
+        }}
+        Zeichen</mat-hint
       >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Beschreibung</mat-label>
+      <!-- Brot des Lebens -->
+      <textarea
+        matInput
+        [formControl]="form.controls.title"
+        placeholder="Mehl und Wasser"
+        type="text"
+        line
+        data-test-recipe-description-input
+      ></textarea>
     </mat-form-field>
   </div>
   <button

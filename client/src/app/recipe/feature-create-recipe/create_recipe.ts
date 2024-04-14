@@ -23,6 +23,7 @@ import { NotUndefinedPipe } from '@common/assertions'
     NotUndefinedPipe
   ],
   templateUrl: './create_recipe.html',
+  styleUrl: './create_recipe.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CreateRecipe {

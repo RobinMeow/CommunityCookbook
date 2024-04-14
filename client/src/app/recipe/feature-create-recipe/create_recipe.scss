@@ -1,0 +1,6 @@
+@use '../../shared/variables' as *;
+
+mat-form-field {
+  width: 100%;
+  margin-bottom: #{$spacing};
+}
