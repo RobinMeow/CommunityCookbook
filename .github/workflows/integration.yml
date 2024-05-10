@@ -64,20 +64,20 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.11.1'
-          cache: 'yarn'
-          cache-dependency-path: 'client/yarn.lock'
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
   
       - name: install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
 
       - name: lint
-        run: yarn lint
+        run: npm lint
 
       - name: build
-        run: yarn run build
+        run: npm run build
 
       - name: run jasmine tests
-        run: yarn run test --browsers ChromeHeadless --watch false
+        run: npm run test --browsers ChromeHeadless --watch false
 
   cypress-e2e-tests-on-google-chrome:
     runs-on: ubuntu-22.04
@@ -90,14 +90,17 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.11.1'
-          cache: 'yarn'
-          cache-dependency-path: 'client/yarn.lock'
+          cache: 'npm'
+          cache-dependency-path: 'client/package-lock.json'
+
+      - name: include nx dependencies
+        uses: nrwl/nx-set-shas@v4
 
       - name: serve Front-End
         working-directory: client
         run: |
-          yarn install --frozen-lockfile
-          yarn start &
+          npm ci
+          npm start &
 
       - name: start MongoDB
         uses: supercharge/mongodb-github-action@1.10.0 # already includes "Waiting for MongoDB to accept connections" at the end
@@ -111,7 +114,10 @@ jobs:
         uses: cypress-io/github-action@v6.6.0
         with:
           working-directory: client
-          spec: cypress/e2e/**/*cy.ts
+          project: ./e2e
+          spec: e2e/src/**/*cy.ts
           browser: chrome
           wait-on: 'http://localhost:5126/swagger/index.html, http://localhost:4200'
           wait-on-timeout: 150 # wait 150s (dotnet restore can take a while if not cached. Otherwise it usually takes a few seconds)
+
+# TODO: include e2e for other platforms and browsers https://github.com/cypress-io/github-action/blob/master/.github/workflows/example-basic.yml
